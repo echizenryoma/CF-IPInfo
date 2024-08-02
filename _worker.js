@@ -123,15 +123,15 @@ async function handleRequest(request) {
   const url = new URL(request.url);
   const acceptHeader = request.headers.get('Accept') || '';
 
+  if (url.pathname === '/api' || url.pathname === '/json') {
+    return handleApiRequest(request);
+  }
+
   if (request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
     return handleIpRequest(request);
   }
 
   if (acceptHeader.includes('application/json')) {
-    return handleApiRequest(request);
-  }
-
-  if (url.pathname === '/api' || url.pathname === '/json') {
     return handleApiRequest(request);
   }
 
