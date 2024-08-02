@@ -109,15 +109,29 @@ async function handleApiRequest(request) {
   });
 }
 
+async function handleIpRequest(request) {
+  const clientIP = request.headers.get('CF-Connecting-IP') || 'Unknown';
+
+  return new Response(clientIP, {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
 async function handleRequest(request) {
   const url = new URL(request.url);
   const acceptHeader = request.headers.get('Accept') || '';
 
-  if (acceptHeader.includes('application/json') || request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
+  if (request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
+    return handleIpRequest(request);
+  }
+
+  if (acceptHeader.includes('application/json')) {
     return handleApiRequest(request);
   }
 
-  if (url.pathname === '/api') {
+  if (url.pathname === '/api' || url.pathname === '/json') {
     return handleApiRequest(request);
   }
 
