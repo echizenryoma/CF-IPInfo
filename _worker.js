@@ -101,7 +101,7 @@ async function handleApiRequest(request) {
     longitude: longitude
   };
 
-  return new Response(JSON.stringify(data), {
+  return new Response(JSON.stringify(data, null, 4), {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Access-Control-Allow-Origin': '*'
