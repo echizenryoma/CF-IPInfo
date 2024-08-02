@@ -1,7 +1,3 @@
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
-
 const translations = {
   en: {
     title: "Your IP Information Dashboard",
@@ -106,7 +102,7 @@ async function handleApiRequest(request) {
   };
 
   return new Response(JSON.stringify(data), {
-    headers: { 
+    headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Access-Control-Allow-Origin': '*'
     },
@@ -120,7 +116,7 @@ async function handleRequest(request) {
   if (acceptHeader.includes('application/json') || request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
     return handleApiRequest(request);
   }
-  
+
   if (url.pathname === '/api') {
     return handleApiRequest(request);
   }
@@ -400,7 +396,13 @@ async function handleRequest(request) {
 </html>
 `;
 
-return new Response(html, {
-  headers: { 'Content-Type': 'text/html;charset=UTF-8' },
-});
-}    
+  return new Response(html, {
+    headers: { 'Content-Type': 'text/html;charset=UTF-8' },
+  });
+}
+
+export default {
+  async fetch(request) {
+    return handleRequest(request);
+  },
+};
