@@ -119,12 +119,25 @@ async function handleIpRequest(request) {
   });
 }
 
+async function handleLocationRequest(request) {
+  const country = request.cf.country || 'Unknown';
+  return new Response(country, {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
 async function handleRequest(request) {
   const url = new URL(request.url);
   const acceptHeader = request.headers.get('Accept') || '';
 
   if (url.pathname === '/api' || url.pathname === '/json') {
     return handleApiRequest(request);
+  }
+
+  if (url.pathname === '/loc' || url.pathname === '/location') {
+    return handleLocationRequest(request);
   }
 
   if (request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
