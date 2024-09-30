@@ -140,7 +140,7 @@ async function handleRequest(request) {
     return handleLocationRequest(request);
   }
 
-  if (request.headers.get('User-Agent')?.toLowerCase().includes('curl')) {
+  if (request.headers.get('User-Agent')?.toLowerCase().includes('curl') || url.pathname === '/ip') {
     return handleIpRequest(request);
   }
 
